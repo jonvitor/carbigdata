@@ -1,11 +1,13 @@
 package com.carbigdata.domain.model.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.carbigdata.domain.model.Cliente;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long>{
+public interface ClienteRepository extends CustomJpaRepository<Cliente, Long>{
 
+	Optional<Cliente> findByCpf(String cpf);
 }

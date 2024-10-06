@@ -1,6 +1,7 @@
 package com.carbigdata.domain.model;
 
 import java.time.OffsetDateTime;
+import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -33,6 +34,6 @@ public class Cliente {
 	private OffsetDateTime dataCriacao;
     
     @Column(name = "data_nascimento",nullable = false)
-	private OffsetDateTime dataNascimento;
+	private Date dataNascimento;
 
 }
