@@ -5,10 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 @Entity
+@Table(name = "endereco", schema = "carbigdata")
 public class Endereco {
 	
 	@Id
@@ -31,4 +34,7 @@ public class Endereco {
     @Column(name = "nme_estado", nullable = false)
     private String estado;
 
+    public String deomonho() {
+    	return this.estado;
+    }
 }
