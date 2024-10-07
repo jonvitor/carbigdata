@@ -27,4 +27,15 @@ public class ClienteService {
 		
 		return clienteRepository.save(cliente);
 	}
+	
+	@Transactional
+	public Cliente salvarOuAtualizarCliente(Cliente cliente) {
+        return clienteRepository.findByCpf(cliente.getCpf())
+            .map(clienteExistente -> {
+                cliente.setId(clienteExistente.getId());
+                cliente.setDataCriacao(clienteExistente.getDataCriacao());
+                return clienteRepository.save(cliente);
+            })
+            .orElseGet(() -> clienteRepository.save(cliente));
+    }
 }

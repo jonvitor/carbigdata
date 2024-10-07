@@ -1,11 +1,14 @@
 package com.carbigdata.domain.model.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.carbigdata.domain.model.Endereco;
 
 @Repository
-public interface EnderecoRepository extends JpaRepository<Endereco, Long>{
+public interface EnderecoRepository extends CustomJpaRepository<Endereco, Long>{
+	
+	Optional<Endereco> findByCep(String cep);
 
 }
