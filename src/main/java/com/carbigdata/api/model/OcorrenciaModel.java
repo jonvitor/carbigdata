@@ -1,10 +1,10 @@
 package com.carbigdata.api.model;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import com.carbigdata.domain.model.Cliente;
 import com.carbigdata.domain.model.Endereco;
-import com.carbigdata.domain.model.StatusOcorrencia;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +17,6 @@ public class OcorrenciaModel {
 	private Endereco endereco;
 	private OffsetDateTime dataOcorrencia;
 	private String status;
+	List<FotoOcorrenciaModel> fotosOcorrencia;
+	
 }

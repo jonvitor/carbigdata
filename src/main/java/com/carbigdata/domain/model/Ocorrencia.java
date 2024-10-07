@@ -1,6 +1,7 @@
 package com.carbigdata.domain.model;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -38,4 +40,7 @@ public class Ocorrencia {
     @Column(name = "sta_ocorrencia", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusOcorrencia staOcorrencia;
+    
+    @Transient
+    private List<FotoOcorrencia> fotosOcorrencia;
 }
