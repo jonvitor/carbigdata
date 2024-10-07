@@ -1,12 +1,16 @@
 package com.carbigdata.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.carbigdata.domain.model.FotoOcorrencia;
 import com.carbigdata.domain.model.Ocorrencia;
 import com.carbigdata.domain.model.StatusOcorrencia;
 import com.carbigdata.domain.model.repository.EnderecoRepository;
 import com.carbigdata.domain.model.repository.OcorrenciaRepository;
+import com.carbigdata.infrastructure.service.S3FotoStorageService;
 
 import jakarta.transaction.Transactional;
 
@@ -22,8 +26,11 @@ public class OcorrenciaService {
 	@Autowired
 	private EnderecoService enderecoService;
 	
+	@Autowired
+	private S3FotoStorageService fotoStorageService;
+	
 	@Transactional
-	public Ocorrencia salvar(Ocorrencia ocorrencia) {	
+	public Ocorrencia salvar(Ocorrencia ocorrencia, FotoOcorrencia fotoOcorrencia, String nomeFoto) {	
 		var cliente = ocorrencia.getCliente();
 		var endereco = ocorrencia.getEndereco();
 
@@ -34,6 +41,20 @@ public class OcorrenciaService {
 		ocorrencia.setEndereco(endereco);
 		ocorrencia.setStaOcorrencia(StatusOcorrencia.ATIVA);
 		
-		return ocorrenciaRepository.save(ocorrencia);
+		Ocorrencia ocorrenciaSalva = ocorrenciaRepository.save(ocorrencia);
+		
+		try {
+			fotoStorageService.enviarFotoOcorrencia(nomeFoto, fotoOcorrencia, ocorrenciaSalva.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ocorrenciaSalva;
+	}
+	
+	
+	public Optional<Ocorrencia> encontrarOcorrencia(Long id) {
+		return ocorrenciaRepository.findById(id);
 	}
 }

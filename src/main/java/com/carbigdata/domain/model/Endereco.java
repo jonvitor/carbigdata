@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 
@@ -20,18 +21,23 @@ public class Endereco {
     private Long id;
 
     @Column(name = "nme_logradouro", nullable = false)
+	@NotBlank
     private String logradouro;
 
     @Column(name = "nme_bairro", nullable = false)
+	@NotBlank
     private String bairro;
 
     @Column(name = "nro_cep", nullable = false)
+	@NotBlank
     private String cep;
 
     @Column(name = "nme_cidade", nullable = false)
+	@NotBlank
     private String cidade;
 
     @Column(name = "nme_estado", nullable = false)
+	@NotBlank
     private String estado;
 
     public String deomonho() {

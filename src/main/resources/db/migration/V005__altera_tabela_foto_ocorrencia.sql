@@ -1,0 +1,1 @@
+ALTER TABLE foto_ocorrencia ALTER COLUMN dsc_hash TYPE TEXT;

@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 
 import com.carbigdata.domain.model.Endereco;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,12 +12,15 @@ import lombok.Setter;
 @Setter
 public class OcorrenciaInput {
 
-	@NotBlank
+	@NotNull
 	private ClienteInput cliente;
 	
-	@NotBlank
+	@NotNull
 	private Endereco endereco;
 	
-	@NotBlank
+	@NotNull
 	private OffsetDateTime dataOcorrencia;
+	
+	@NotNull
+	private FotoOcorrenciaInput fotoOcorrencia;
 }

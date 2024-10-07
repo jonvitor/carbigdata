@@ -2,6 +2,8 @@ package com.carbigdata.domain.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +29,7 @@ public class FotoOcorrencia {
     private Ocorrencia ocorrencia;
 
     @Column(name = "data_criacao", nullable = false)
+	@CreationTimestamp
     private LocalDateTime dataCriacao;
 
     @Column(name = "dsc_path_bucket", nullable = false)
