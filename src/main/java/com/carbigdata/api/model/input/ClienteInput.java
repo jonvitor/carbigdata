@@ -12,16 +12,16 @@ import lombok.Setter;
 @Getter
 public class ClienteInput {
 
-	@NotBlank
-	@NotNull
+	@NotBlank(message = "Nome do cliente é obrigatório")
+	@NotNull(message = "Nome do cliente não pode ser vazio")
 	private String nome;
 	
 	@NotBlank(message = "CPF do cliente é obrigatório")
-	@NotNull(message = "CPF do cliente é obrigatório")
+	@NotNull(message = "CPF do cliente não pode ser vazio")
 	@Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos")
 	private String cpf;
 	
-	@NotNull	
+	@NotNull(message = "Data de nascimento não pode ser vazia")
 	private Date dataNascimento;
 	
 }

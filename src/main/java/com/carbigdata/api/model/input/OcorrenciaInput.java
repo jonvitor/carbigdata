@@ -2,9 +2,8 @@ package com.carbigdata.api.model.input;
 
 import java.time.OffsetDateTime;
 
-import com.carbigdata.domain.model.Endereco;
-
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,13 +12,13 @@ import lombok.Setter;
 @Setter
 public class OcorrenciaInput {
 
-	@NotNull
+	@NotNull(message = "Cliente não pode ser vazio")
 	@Valid
 	private ClienteInput cliente;
 	
 	@NotNull
 	@Valid
-	private Endereco endereco;
+	private EnderecoInput endereco;
 	
 	@NotNull
 	private OffsetDateTime dataOcorrencia;

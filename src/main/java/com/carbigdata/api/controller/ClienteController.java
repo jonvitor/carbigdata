@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.carbigdata.api.assembler.ClienteModelAssembler;
 import com.carbigdata.api.assembler.ClienteModelDisassembler;
-import com.carbigdata.api.exceptionhandler.ErrorResponse;
 import com.carbigdata.api.model.ClienteModel;
 import com.carbigdata.api.model.input.ClienteInput;
 import com.carbigdata.domain.model.Cliente;
-import com.carbigdata.domain.model.exception.ClienteExistenteException;
 import com.carbigdata.domain.model.repository.ClienteRepository;
 import com.carbigdata.domain.service.ClienteService;
 
@@ -52,11 +48,4 @@ public class ClienteController {
 		return clienteModelAssembler.toModel(cliente);
 	}
 	
-	@ExceptionHandler(ClienteExistenteException.class)
-    public ResponseEntity<ErrorResponse> handleClienteExistenteException(ClienteExistenteException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
-        
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    }
-
 }

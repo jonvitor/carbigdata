@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 public class FotoOcorrenciaInput {
 
-	@NotNull
-	@NotBlank
+	@NotBlank(message = "Nome da foto é obrigatório")
+	@NotNull(message = "Nome da foto não pode ser vazio")
 	private String nomeFoto;
 	
-	@NotNull
-	@NotBlank
+	@NotBlank(message = "Hash é obrigatório")
+	@NotNull(message = "Hash não pode ser vazio")
 	private String dscHash;
 	
 }
