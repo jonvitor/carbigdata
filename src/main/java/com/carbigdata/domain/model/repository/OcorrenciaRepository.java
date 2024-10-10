@@ -9,6 +9,4 @@ import com.carbigdata.domain.model.Ocorrencia;
 @Repository
 public interface OcorrenciaRepository extends JpaRepository<Ocorrencia, Long>, 
 	JpaSpecificationExecutor<Ocorrencia> {
-	
-	
 }

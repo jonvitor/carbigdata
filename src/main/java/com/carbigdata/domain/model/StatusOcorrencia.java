@@ -14,4 +14,5 @@ public enum StatusOcorrencia {
 	public String getDescricao() {
 		return this.descricao;
 	}
+	
 }

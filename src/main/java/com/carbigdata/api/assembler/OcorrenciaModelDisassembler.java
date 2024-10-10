@@ -4,15 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.carbigdata.api.model.input.ClienteInput;
 import com.carbigdata.api.model.input.OcorrenciaInput;
-import com.carbigdata.domain.model.Cliente;
 import com.carbigdata.domain.model.Ocorrencia;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class OcorrenciaModelDisassembler {
 
-	@Autowired
 	private ModelMapper modelMapper;
 	
 	public Ocorrencia toDomainObject(OcorrenciaInput ocorrenciaInput) {

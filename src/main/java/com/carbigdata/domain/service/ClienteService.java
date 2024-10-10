@@ -10,11 +10,12 @@ import com.carbigdata.domain.model.exception.ClienteExistenteException;
 import com.carbigdata.domain.model.repository.ClienteRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class ClienteService {
 
-	@Autowired
 	private ClienteRepository clienteRepository;
 	
 	@Transactional

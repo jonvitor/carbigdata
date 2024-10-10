@@ -16,38 +16,45 @@ import com.carbigdata.api.assembler.FotoOcorrenciaModelDisassembler;
 import com.carbigdata.api.exceptionhandler.ErrorResponse;
 import com.carbigdata.api.model.input.FotoOcorrenciaInput;
 import com.carbigdata.domain.model.FotoOcorrencia;
+import com.carbigdata.domain.model.exception.OcorrenciaFinalizadaException;
 import com.carbigdata.domain.model.exception.OcorrenciaInexistenteException;
-import com.carbigdata.domain.model.repository.FotoOcorrenciaRepository;
 import com.carbigdata.infrastructure.service.S3FotoStorageService;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping(value = "/ocorrencias/foto/{ocorrenciaId}")
 @Validated
 public class FotoOcorrenciaController {
 
-	@Autowired
-	private FotoOcorrenciaRepository fotoOcorrenciaRepository;
-	
-	@Autowired
 	private S3FotoStorageService fotoStorageService;
-	
-	@Autowired
 	private FotoOcorrenciaModelDisassembler modelDisassembler;
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void adicionarFoto(@PathVariable Long ocorrenciaId, @RequestBody @Valid FotoOcorrenciaInput fotoOcorrenciaInput) {
+	public void adicionarFoto(@PathVariable Long ocorrenciaId,
+			@RequestBody @Valid FotoOcorrenciaInput fotoOcorrenciaInput) {
 		FotoOcorrencia fotoOcorrencia = modelDisassembler.toDomainObject(fotoOcorrenciaInput);
-		
+
 		fotoStorageService.enviarFotoOcorrencia(fotoOcorrenciaInput.getNomeFoto(), fotoOcorrencia, ocorrenciaId);
 	}
-	
+
 	@ExceptionHandler(OcorrenciaInexistenteException.class)
-    public ResponseEntity<ErrorResponse> handleClienteExistenteException(OcorrenciaInexistenteException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
-        
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    }
+	public ResponseEntity<ErrorResponse> handleOcorrenciaInexistenteException(OcorrenciaInexistenteException ex) {
+		return handleException(ex);
+	}
+
+	@ExceptionHandler(OcorrenciaFinalizadaException.class)
+	public ResponseEntity<ErrorResponse> handleOcorrenciaFinalizadaException(OcorrenciaFinalizadaException ex) {
+		return handleException(ex);
+	}
+
+	private ResponseEntity<ErrorResponse> handleException(RuntimeException ex) {
+		ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+	}
+
 }

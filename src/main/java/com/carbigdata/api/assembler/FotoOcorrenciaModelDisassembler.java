@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 import com.carbigdata.api.model.input.FotoOcorrenciaInput;
 import com.carbigdata.domain.model.FotoOcorrencia;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class FotoOcorrenciaModelDisassembler {
 
-	@Autowired
 	private ModelMapper modelMapper;
 	
 	public FotoOcorrencia toDomainObject(FotoOcorrenciaInput ocorrenciaInput) {

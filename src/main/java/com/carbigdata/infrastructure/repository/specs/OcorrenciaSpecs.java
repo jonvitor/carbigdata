@@ -10,20 +10,23 @@ import com.carbigdata.domain.model.Ocorrencia;
 import jakarta.persistence.criteria.Predicate;
 
 public class OcorrenciaSpecs {
+	
+	private static final String CLIENTE = "cliente";
+	
 	public static Specification<Ocorrencia> usandoFiltro(OcorrenciaFilter filtro) {
 		return (root, query, builder) -> {
 			var predicates = new ArrayList<Predicate>();
 
 			if (filtro.getClienteId() != null) {
-				predicates.add(builder.equal(root.get("cliente").get("id"), filtro.getClienteId()));
+				predicates.add(builder.equal(root.get(CLIENTE).get("id"), filtro.getClienteId()));
 			}
 
 			if (filtro.getCpf() != null) {
-				predicates.add(builder.equal(root.get("cliente").get("cpf"), filtro.getCpf()));
+				predicates.add(builder.equal(root.get(CLIENTE).get("cpf"), filtro.getCpf()));
 			}
 			
 			if (filtro.getNome() != null) {
-				predicates.add(builder.equal(root.get("cliente").get("nome"), filtro.getNome()));
+				predicates.add(builder.equal(root.get(CLIENTE).get("nome"), filtro.getNome()));
 			}
 			
 			if (filtro.getCidade() != null) {

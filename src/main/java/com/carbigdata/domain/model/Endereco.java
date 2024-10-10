@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @Entity
@@ -40,7 +39,4 @@ public class Endereco {
 	@NotBlank
     private String estado;
 
-    public String deomonho() {
-    	return this.estado;
-    }
 }

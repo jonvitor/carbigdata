@@ -11,9 +11,13 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,48 +26,40 @@ import org.springframework.web.bind.annotation.RestController;
 import com.carbigdata.api.assembler.FotoOcorrenciaModelDisassembler;
 import com.carbigdata.api.assembler.OcorrenciaModelAssembler;
 import com.carbigdata.api.assembler.OcorrenciaModelDisassembler;
+import com.carbigdata.api.exceptionhandler.ErrorResponse;
+import com.carbigdata.api.model.OcorrenciaFinalizadaModel;
 import com.carbigdata.api.model.OcorrenciaModel;
 import com.carbigdata.api.model.input.FotoOcorrenciaInput;
 import com.carbigdata.api.model.input.OcorrenciaInput;
 import com.carbigdata.domain.filter.OcorrenciaFilter;
 import com.carbigdata.domain.model.FotoOcorrencia;
 import com.carbigdata.domain.model.Ocorrencia;
+import com.carbigdata.domain.model.exception.OcorrenciaInexistenteException;
 import com.carbigdata.domain.model.repository.FotoOcorrenciaRepository;
 import com.carbigdata.domain.model.repository.OcorrenciaRepository;
 import com.carbigdata.domain.service.OcorrenciaService;
 import com.carbigdata.infrastructure.repository.specs.OcorrenciaSpecs;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping(value = "/ocorrencias")
 @Validated
 public class OcorrenciaController {
 
-	@Autowired
 	private OcorrenciaRepository ocorrenciaRepository;
-	
-	@Autowired
 	private FotoOcorrenciaRepository fotoOcorrenciaRepository;
-	
-	@Autowired
 	private OcorrenciaModelAssembler ocorrenciaModelAssembler;
-	
-	@Autowired
 	private OcorrenciaModelDisassembler ocorrenciaModelDisassembler;
-	
-	@Autowired
 	private OcorrenciaService ocorrenciaService;
-	
-	@Autowired
 	private FotoOcorrenciaModelDisassembler fotoOcorrenciaModelDisassembler;
-	
-	 @Autowired
-	 private PagedResourcesAssembler<OcorrenciaModel> pagedResourcesAssembler;
+	private PagedResourcesAssembler<OcorrenciaModel> pagedResourcesAssembler;
 	
 	@GetMapping
 	public PagedModel<EntityModel<OcorrenciaModel>> pesquisar(OcorrenciaFilter filtro, 
-			@PageableDefault(size = 2) Pageable pageable) {
+			@PageableDefault(size = 10) Pageable pageable) {
 		Page<Ocorrencia> todasOcorrencias = ocorrenciaRepository.findAll(
 				OcorrenciaSpecs.usandoFiltro(filtro), pageable);
 		
@@ -93,5 +89,23 @@ public class OcorrenciaController {
 		
 		return ocorrenciaModelAssembler.toModel(ocorrencia);
 	}
+	
+	@PutMapping("/{ocorrenciaId}")
+	@ResponseStatus(HttpStatus.OK)
+	public OcorrenciaFinalizadaModel finalizar(@PathVariable Long ocorrenciaId) {
+		OcorrenciaFinalizadaModel ocorrenciaFinalizadaModel =  new OcorrenciaFinalizadaModel();
+		
+		ocorrenciaService.finalizar(ocorrenciaId);
+		ocorrenciaFinalizadaModel.setMensagem("A ocorrência " + ocorrenciaId + " foi finalizada com sucesso!");
+		
+		return ocorrenciaFinalizadaModel;
+	}
+	
+	@ExceptionHandler(OcorrenciaInexistenteException.class)
+    public ResponseEntity<ErrorResponse> handleOcorrenciaInexistenteException(OcorrenciaInexistenteException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
 	
 }

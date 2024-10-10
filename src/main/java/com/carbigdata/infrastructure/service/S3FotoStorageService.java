@@ -1,7 +1,6 @@
 package com.carbigdata.infrastructure.service;
 
 import java.io.ByteArrayInputStream;
-import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,28 +11,23 @@ import org.springframework.stereotype.Service;
 import com.carbigdata.core.storage.MinioProperties;
 import com.carbigdata.domain.model.FotoOcorrencia;
 import com.carbigdata.domain.model.Ocorrencia;
+import com.carbigdata.domain.model.exception.OcorrenciaFinalizadaException;
 import com.carbigdata.domain.model.exception.OcorrenciaInexistenteException;
 import com.carbigdata.domain.model.repository.OcorrenciaRepository;
 import com.carbigdata.domain.service.FotoOcorrenciaService;
-import com.carbigdata.domain.service.OcorrenciaService;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class S3FotoStorageService {
 
-	@Autowired
 	private MinioClient minioClient;
-
-	@Autowired
 	private MinioProperties minioProperties;
-	
-	@Autowired
 	private FotoOcorrenciaService fotoOcorrenciaService;
-	
-	@Autowired
 	private OcorrenciaRepository ocorrenciaRepository;
 
 	@Transactional
@@ -45,7 +39,11 @@ public class S3FotoStorageService {
 		Optional<Ocorrencia> ocorrencia = ocorrenciaRepository.findById(ocorrenciaId);
 		
 		if (ocorrencia.isEmpty()) {
-			throw new OcorrenciaInexistenteException("Ocorrencia inexistente!");
+			throw new OcorrenciaInexistenteException();
+		}
+		
+		if (ocorrencia.get().getStaOcorrencia().getDescricao().equals("Finalizada")) {
+			throw new OcorrenciaFinalizadaException();
 		}
         
 		try {
@@ -74,7 +72,7 @@ public class S3FotoStorageService {
 	}
 	
 	private String gerarCaminhoBucket(String nomeArquivo) {
-		return minioProperties.getUrl() + "/browser/" + nomeArquivo;
+		return minioProperties.getUrl() + "/browser/" + minioProperties.getBucketName() + nomeArquivo;
 	}
 	
 }

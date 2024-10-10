@@ -7,11 +7,12 @@ import com.carbigdata.domain.model.Endereco;
 import com.carbigdata.domain.model.repository.EnderecoRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class EnderecoService {
 
-	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
 	@Transactional

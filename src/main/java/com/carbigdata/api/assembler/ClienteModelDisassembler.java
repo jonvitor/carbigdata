@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 import com.carbigdata.api.model.input.ClienteInput;
 import com.carbigdata.domain.model.Cliente;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class ClienteModelDisassembler {
 
-	@Autowired
 	private ModelMapper modelMapper;
 	
 	public Cliente toDomainObject(ClienteInput clienteInput) {

@@ -24,21 +24,16 @@ import com.carbigdata.domain.model.repository.ClienteRepository;
 import com.carbigdata.domain.service.ClienteService;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping(value = "/clientes")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ClienteController {
 	
-	@Autowired
 	private ClienteRepository clienteRepository;
-	
-	@Autowired
 	private ClienteModelAssembler clienteModelAssembler;
-	
-	@Autowired
 	private ClienteModelDisassembler clienteModelDisassembler;
-	
-	@Autowired
 	private ClienteService clienteService;
 	
 	@GetMapping

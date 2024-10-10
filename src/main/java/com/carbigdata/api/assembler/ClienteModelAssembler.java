@@ -3,7 +3,6 @@ package com.carbigdata.api.assembler;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,12 @@ import org.springframework.stereotype.Component;
 import com.carbigdata.api.model.ClienteModel;
 import com.carbigdata.domain.model.Cliente;
 
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 public class ClienteModelAssembler {
 
-	@Autowired
 	private ModelMapper modelMapper;
 	
 	public ClienteModel toModel(Cliente cliente) {
@@ -25,8 +25,8 @@ public class ClienteModelAssembler {
 	
 	public List<ClienteModel> toCollectionModel(Collection<Cliente> clientes) {
 		return clientes.stream()
-				.map(usuario -> toModel(usuario))
-				.collect(Collectors.toList());
+				.map(this::toModel)
+				.toList();
 	}
 	
 }
