@@ -15,13 +15,13 @@ public class OcorrenciaInput {
 	@Valid
 	private ClienteInput cliente;
 	
-	@NotNull
+	@NotNull(message = "Endereco não pode ser vazio")
 	@Valid
 	private EnderecoInput endereco;
 	
-	@NotNull
+	@NotNull(message = "Data da ocorrencia não pode ser vazia")
 	private OffsetDateTime dataOcorrencia;
 	
-	@NotNull
+	@NotNull(message = "Foto da ocorrencia não pode ser vazia")
 	private FotoOcorrenciaInput fotoOcorrencia;
 }
