@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carbigdata.api.assembler.FotoOcorrenciaModelAssembler;
 import com.carbigdata.api.assembler.FotoOcorrenciaModelDisassembler;
 import com.carbigdata.api.assembler.OcorrenciaModelAssembler;
 import com.carbigdata.api.assembler.OcorrenciaModelDisassembler;
+import com.carbigdata.api.model.FotoOcorrenciaModel;
 import com.carbigdata.api.model.OcorrenciaFinalizadaModel;
 import com.carbigdata.api.model.OcorrenciaModel;
 import com.carbigdata.api.model.input.FotoOcorrenciaInput;
@@ -52,6 +54,7 @@ public class OcorrenciaController {
 	private OcorrenciaService ocorrenciaService;
 	private FotoOcorrenciaModelDisassembler fotoOcorrenciaModelDisassembler;
 	private PagedResourcesAssembler<OcorrenciaModel> pagedResourcesAssembler;
+	private FotoOcorrenciaModelAssembler fotoOcorrenciaModelAssembler;
 	
 	@GetMapping
 	public PagedModel<EntityModel<OcorrenciaModel>> pesquisar(OcorrenciaFilter filtro, 
@@ -77,13 +80,24 @@ public class OcorrenciaController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public OcorrenciaModel adicionar(@Valid @RequestBody OcorrenciaInput ocorrenciaInput) {
-		FotoOcorrenciaInput fotoOcorrenciaInput = ocorrenciaInput.getFotoOcorrencia();	
+		List<FotoOcorrenciaInput> fotosOcorrenciaInput = ocorrenciaInput.getFotosOcorrencia();	
 		Ocorrencia ocorrencia = ocorrenciaModelDisassembler.toDomainObject(ocorrenciaInput);
-		FotoOcorrencia fotoOcorrencia = fotoOcorrenciaModelDisassembler.toDomainObject(fotoOcorrenciaInput); 
 		
-		ocorrencia = ocorrenciaService.salvar(ocorrencia, fotoOcorrencia, fotoOcorrenciaInput.getNomeFoto());
+		List<FotoOcorrencia> fotosOcorrencia = fotosOcorrenciaInput.stream()
+				.map(fto -> fotoOcorrenciaModelDisassembler.toDomainObject(fto))
+				.toList(); 
 		
-		return ocorrenciaModelAssembler.toModel(ocorrencia);
+		ocorrencia = ocorrenciaService.salvar(ocorrencia, fotosOcorrencia);
+		
+		OcorrenciaModel ocorrenciaModel = ocorrenciaModelAssembler.toModel(ocorrencia);
+		
+		List<FotoOcorrenciaModel> fotosOcorrenciaModel = fotosOcorrencia.stream()
+				.map(fto -> fotoOcorrenciaModelAssembler.toModel(fto))
+				.toList();
+	
+		ocorrenciaModel.setFotosOcorrencia(fotosOcorrenciaModel);
+		
+		return ocorrenciaModel;
 	}
 	
 	@PutMapping("/{ocorrenciaId}")

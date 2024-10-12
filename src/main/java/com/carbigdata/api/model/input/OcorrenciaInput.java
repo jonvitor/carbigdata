@@ -1,6 +1,7 @@
 package com.carbigdata.api.model.input;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -23,5 +24,5 @@ public class OcorrenciaInput {
 	private OffsetDateTime dataOcorrencia;
 	
 	@NotNull(message = "Foto da ocorrencia não pode ser vazia")
-	private FotoOcorrenciaInput fotoOcorrencia;
+	private List<FotoOcorrenciaInput> fotosOcorrencia;
 }

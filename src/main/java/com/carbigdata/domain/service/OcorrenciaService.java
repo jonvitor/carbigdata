@@ -1,5 +1,6 @@
 package com.carbigdata.domain.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class OcorrenciaService {
 	private S3FotoStorageService fotoStorageService;
 	
 	@Transactional
-	public Ocorrencia salvar(Ocorrencia ocorrencia, FotoOcorrencia fotoOcorrencia, String nomeFoto) {	
+	public Ocorrencia salvar(Ocorrencia ocorrencia, List<FotoOcorrencia> fotosOcorrencia) {	
 		var cliente = ocorrencia.getCliente();
 		var endereco = ocorrencia.getEndereco();
 
@@ -39,7 +40,7 @@ public class OcorrenciaService {
 		Ocorrencia ocorrenciaSalva = ocorrenciaRepository.save(ocorrencia);
 		
 		try {
-			fotoStorageService.enviarFotoOcorrencia(nomeFoto, fotoOcorrencia, ocorrenciaSalva.getId());
+			fotosOcorrencia.forEach(fto -> fotoStorageService.enviarFotoOcorrencia(fto, ocorrencia.getId()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

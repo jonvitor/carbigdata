@@ -1,5 +1,7 @@
 package com.carbigdata.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -30,10 +32,13 @@ public class FotoOcorrenciaController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void adicionarFoto(@PathVariable Long ocorrenciaId,
-			@RequestBody @Valid FotoOcorrenciaInput fotoOcorrenciaInput) {
-		FotoOcorrencia fotoOcorrencia = modelDisassembler.toDomainObject(fotoOcorrenciaInput);
-
-		fotoStorageService.enviarFotoOcorrencia(fotoOcorrenciaInput.getNomeFoto(), fotoOcorrencia, ocorrenciaId);
+			@RequestBody @Valid List<FotoOcorrenciaInput> fotosOcorrenciaInput) {
+		
+		for (FotoOcorrenciaInput fotoOcorrenciaInput : fotosOcorrenciaInput) {
+		
+			FotoOcorrencia fotoOcorrencia = modelDisassembler.toDomainObject(fotoOcorrenciaInput);
+			fotoStorageService.enviarFotoOcorrencia(fotoOcorrencia, ocorrenciaId);
+		}
 	}
 
 }

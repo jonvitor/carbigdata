@@ -2,7 +2,9 @@ package com.carbigdata;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -119,11 +121,13 @@ class CadastroFotoIT {
 	    ocorrencia2.setDataOcorrencia(OffsetDateTime.now(ZoneOffset.UTC));
 	    
 	    var foto = new FotoOcorrencia();
-	    
 	    foto.setDscHash("SDFSDFSDGSDGSD");
 	    
-	    ocorrenciaSalva = ocorrenciaService.salvar(ocorrencia, foto, "evidencia01.png");
-	    ocorrenciaFinalizada = ocorrenciaService.salvar(ocorrencia2, foto, "evidencia01.png");
+	    List<FotoOcorrencia> fotos = new ArrayList<>();
+	    fotos.add(foto);
+	    
+	    ocorrenciaSalva = ocorrenciaService.salvar(ocorrencia, fotos);
+	    ocorrenciaFinalizada = ocorrenciaService.salvar(ocorrencia2, fotos);
 	    ocorrenciaService.finalizar(ocorrenciaFinalizada.getId());
 	}
 	

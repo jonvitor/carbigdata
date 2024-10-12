@@ -13,8 +13,8 @@ import com.carbigdata.domain.model.FotoOcorrencia;
 import com.carbigdata.domain.model.Ocorrencia;
 import com.carbigdata.domain.model.exception.OcorrenciaFinalizadaException;
 import com.carbigdata.domain.model.exception.OcorrenciaInexistenteException;
+import com.carbigdata.domain.model.repository.FotoOcorrenciaRepository;
 import com.carbigdata.domain.model.repository.OcorrenciaRepository;
-import com.carbigdata.domain.service.FotoOcorrenciaService;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -27,12 +27,12 @@ public class S3FotoStorageService {
 
 	private MinioClient minioClient;
 	private MinioProperties minioProperties;
-	private FotoOcorrenciaService fotoOcorrenciaService;
+	private FotoOcorrenciaRepository fotoOcorrenciaRepository;
 	private OcorrenciaRepository ocorrenciaRepository;
 
 	@Transactional
-	public String enviarFotoOcorrencia(String nomeFoto, FotoOcorrencia fotoOcorrencia, Long ocorrenciaId) {
-		var nomeArquivo = gerarNomeArquivo(nomeFoto);
+	public String enviarFotoOcorrencia(FotoOcorrencia fotoOcorrencia, Long ocorrenciaId) {
+		var nomeArquivo = gerarNomeArquivo();
         byte[] imagemBytes = Base64.getDecoder().decode(fotoOcorrencia.getDscHash());
         var inputStream = new ByteArrayInputStream(imagemBytes);
 
@@ -59,20 +59,20 @@ public class S3FotoStorageService {
 			fotoOcorrencia.setDscPathBucket(caminhoBucket);
 			fotoOcorrencia.setOcorrencia(ocorrencia.get());
 			
-			fotoOcorrenciaService.salvar(fotoOcorrencia);
+			fotoOcorrenciaRepository.save(fotoOcorrencia);
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 
 		return "File uploaded successfully: " + nomeArquivo;
 	}
 	
-	private String gerarNomeArquivo(String nomeFoto) {
-		return UUID.randomUUID().toString() + "_" + nomeFoto;
+	private String gerarNomeArquivo() {
+		return UUID.randomUUID().toString() + ".jpeg";
 	}
 	
 	private String gerarCaminhoBucket(String nomeArquivo) {
-		return minioProperties.getUrl() + "/browser/" + minioProperties.getBucketName() + nomeArquivo;
+		return minioProperties.getUrl() + "/browser/"  + minioProperties.getBucketName() + "/" + nomeArquivo;
 	}
 	
 }
