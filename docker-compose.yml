@@ -23,14 +23,16 @@ services:
 
   carbigdata-postgres:
     image: postgres
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: carbigdata
     ports:
-      - "5432:5432"
+     - "5432:5432"
     networks:
-      - carbigdata-network
+     - carbigdata-network
+    volumes:
+     - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    environment:
+     POSTGRES_USER: admin
+     POSTGRES_PASSWORD: admin
+     POSTGRES_DB: carbigdata
       
   carbigdata-api:
     image: carbigdata-api
