@@ -73,7 +73,7 @@ class CadastroClienteIT {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
 		RestAssured.given()
-						.body(montarBody())
+						.body(montarBodyInvalido())
 						.contentType(ContentType.JSON)
 						.accept(ContentType.JSON)
 					.when()
@@ -106,6 +106,13 @@ class CadastroClienteIT {
 		return "{"
 				+ "\"nome\": \"Rita\","
 				+ "\"cpf\": \"77777777777\","
+				+ "\"dataNascimento\": \"2024-10-05T03:00:00.000+00:00\""
+			+ "}";
+	}
+	
+	private String montarBodyInvalido() {
+		return "{"
+				+ "\"nome\": \"Rita\","
 				+ "\"dataNascimento\": \"2024-10-05T03:00:00.000+00:00\""
 			+ "}";
 	}

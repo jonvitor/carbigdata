@@ -17,7 +17,7 @@ services:
      - carbigdata-network
     volumes:
      - type: bind
-       source: /mnt/data/compose
+       source: ./data
        target: /mnt/data
     command: server --console-address ":9001" /mnt/data
 
@@ -35,11 +35,15 @@ services:
      POSTGRES_DB: carbigdata
       
   carbigdata-api:
-    image: carbigdata-api
+    build:
+     context: .
+     dockerfile: Dockerfile
     command: ["/wait-for-it.sh", "carbigdata-postgres:5432", "-t", "30", "--", "java", "-jar", "app.jar"]
     environment:
       DB_HOST: carbigdata-postgres
       STORAGE_HOST: carbigdata-minio
+      MINIO_ACCESS_KEY: 8PmrhM6vcR4n88GgJ94J
+      MINIO_ACCESS_SECRET: vAbRt6t9Km3eL2wLEMpn5BJFqOc7lkdye63bif4x
     ports:
       - "8080:8080"
     networks:

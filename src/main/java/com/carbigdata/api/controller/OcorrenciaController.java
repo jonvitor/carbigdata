@@ -100,7 +100,7 @@ public class OcorrenciaController {
 		return ocorrenciaModel;
 	}
 	
-	@PutMapping("/{ocorrenciaId}")
+	@PutMapping("/finalizar/{ocorrenciaId}")
 	@ResponseStatus(HttpStatus.OK)
 	public OcorrenciaFinalizadaModel finalizar(@PathVariable Long ocorrenciaId) {
 		OcorrenciaFinalizadaModel ocorrenciaFinalizadaModel =  new OcorrenciaFinalizadaModel();

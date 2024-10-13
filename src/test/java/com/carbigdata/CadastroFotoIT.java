@@ -132,9 +132,9 @@ class CadastroFotoIT {
 	}
 	
 	private String montarBody() {
-		return "{"
+		return "[{"
 					+ "\"nomeFoto\": \"evidencia02.png\","
 					+ "\"dscHash\": \"SDFSDFSDGSDGSD\""
-				+ "}";
+				+ "}]";
 	}
 }

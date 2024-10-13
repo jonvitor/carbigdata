@@ -1,3 +1,5 @@
+TRUNCATE TABLE ocorrencia, foto_ocorrencia, cliente, endereco RESTART IDENTITY CASCADE;
+
 -- Populando a tabela 'endereco'
 INSERT INTO endereco (nme_logradouro, nme_bairro, nro_cep, nme_cidade, nme_estado)
 VALUES 
@@ -35,9 +37,8 @@ VALUES
     (6, 6, CURRENT_TIMESTAMP, 'ATIVA'),
     (7, 7, CURRENT_TIMESTAMP, 'ATIVA'),
     (8, 8, CURRENT_TIMESTAMP, 'ATIVA'),
-    (9, 9, CURRENT_TIMESTAMP, 'FINALIZADA'),
-    (10, 10, CURRENT_TIMESTAMP, 'FINALIZADA');
-
+    (9, 9, CURRENT_TIMESTAMP, 'FINALIZADA');
+   
 -- Populando a tabela 'foto_ocorrencia'
 INSERT INTO foto_ocorrencia (cod_ocorrencia, data_criacao, dsc_path_bucket, dsc_hash)
 VALUES 
@@ -49,5 +50,4 @@ VALUES
     (6, CURRENT_TIMESTAMP, 's3://bucket/foto6.jpg', 'hashfoto6'),
     (7, CURRENT_TIMESTAMP, 's3://bucket/foto7.jpg', 'hashfoto7'),
     (8, CURRENT_TIMESTAMP, 's3://bucket/foto8.jpg', 'hashfoto8'),
-    (9, CURRENT_TIMESTAMP, 's3://bucket/foto9.jpg', 'hashfoto9'),
-    (10, CURRENT_TIMESTAMP, 's3://bucket/foto10.jpg', 'hashfoto10');
+    (9, CURRENT_TIMESTAMP, 's3://bucket/foto9.jpg', 'hashfoto9');

@@ -169,10 +169,10 @@ class CadastroOcorrenciaIT {
 				        "estado": "sc"
 				    },
 				    "dataOcorrencia": "2024-12-10T12:30:00Z",
-				    "fotoOcorrencia": {
+				    "fotosOcorrencia": [{
 				        "nomeFoto": "supertesteocorrencia.png",
 				        "dscHash": "JCSAHCHSCACSAKCSAKL"
-				    }
+				    }]
 				}
 				""";
 	}
