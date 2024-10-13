@@ -51,3 +51,5 @@ Para testar api importar o arquivo json para o Postman ou outro aplicativo simil
 [Insomnia_2024-10-13.json](https://github.com/user-attachments/files/17356799/Insomnia_2024-10-13.json)
 
 Para gerar o token chamar o endpoint de autenticação com id: carbigdata-client e secret: carbigdata123
+
+Utilizar o token gerado para realizar as outras chamadas com `Bearer "token gerado"`
