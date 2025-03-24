@@ -1,5 +1,3 @@
-#Carbigdata
-
 ## Pré-requisitos:
 
 Ter docker e docker-compose instalados.
